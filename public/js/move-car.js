@@ -91,7 +91,7 @@ function init() {
 	controls.maxDistance = 30;
 
 	controls.maxPolarAngle = Math.PI / 2;
-    camera.position.set( 0, 5, 30 );
+    //camera.position.set( 0, 5, 30 );
     // controls.update();
     
     //document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -99,22 +99,19 @@ function init() {
 	//window.addEventListener( 'resize', onWindowResize, false );
 }
 function animate() {
-
     requestAnimationFrame( animate );
     controls.update();
     render();
-
 }
 function render() {
 
     socket.on('moveCar', function ( resp, callback) {
         console.log(resp.data.x)
-        camera.position.x += ( resp.data.x - camera.position.x ) * .05;
-        camera.position.y += ( - resp.data.y - camera.position.y ) * .05;
+        // camera.position.x += ( resp.data.x - camera.position.x ) * .05;
+        // camera.position.y += ( - resp.data.y - camera.position.y ) * .05;
+        camera.position.x = resp.data.x * .05;
+        camera.position.y = resp.data.y * .05;
      });
-
-    // camera.position.x = 15;
-    // camera.position.y = 2;
 
     camera.lookAt( scene.position );
 
