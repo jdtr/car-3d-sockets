@@ -1,11 +1,15 @@
-const { IO } = require('../server');
+const { io } = require('../server');
 
-IO.on('connection', function (client) {
+io.on('connection', function (client) {
     console.log("Connection")
 
-    client.emit('moveCar', { message: "backend connection" });
+    let coord;
 
-    client.on("coord", function (data) {
+    client.on("coord", function (data, callback) {
         console.log(data)
+
+        io.sockets.emit('moveCar', { data }); 
+
     });
+
 });

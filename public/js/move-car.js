@@ -8,6 +8,8 @@ import { DDSLoader } from './jsm/DDSLoader.js';
 import { OrbitControls } from './jsm/OrbitControls.js';
 
 // Variables
+const socket = io();
+
 let camera, scene, renderer, controls;
 let container;
 let mouseX = 30, mouseY = -5;
@@ -105,8 +107,11 @@ function animate() {
 }
 function render() {
 
-    camera.position.x += ( mouseX - camera.position.x ) * .05;
-    camera.position.y += ( - mouseY - camera.position.y ) * .05;
+    socket.on('moveCar', function ( resp, callback) {
+        console.log(resp.data.x)
+        camera.position.x += ( resp.data.x - camera.position.x ) * .05;
+        camera.position.y += ( - resp.data.y - camera.position.y ) * .05;
+     });
 
     // camera.position.x = 15;
     // camera.position.y = 2;
@@ -115,6 +120,15 @@ function render() {
 
     renderer.render( scene, camera );
 
+}
+function socketsServer () {
+    console.log("Sockets")
+    socket.on('moveCar', function ( resp, callback) {
+       console.log(resp)
+    });
+    // socket.emit('coord', { x: e.clientX, y: e.clientY }, function (data) {
+    //     console.log(data)
+    // });
 }
 
 function onWindowResize() {
@@ -138,5 +152,6 @@ function onDocumentMouseMove( event ) {
 
 init();
 animate();
+//socketsServer ()
 
 
